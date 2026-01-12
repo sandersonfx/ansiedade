@@ -358,7 +358,7 @@
               </div>
 
               <!-- CTA Principal em Destaque -->
-              <a href="https://pay.kiwify.com.br/h58yr3t" class="btn-primary text-lg sm:text-2xl py-6 sm:py-7 font-bold shadow-2xl hover:shadow-3xl">
+              <a href="https://pay.kiwify.com.br/h58yr3t" @click="trackCheckout" class="btn-primary text-lg sm:text-2xl py-6 sm:py-7 font-bold shadow-2xl hover:shadow-3xl">
                 SIM, QUERO ACESSAR AGORA
               </a>
 
@@ -443,22 +443,24 @@
     </section>
     <section class="section-container pb-20 sm:pb-32">
       <div class="card-gentle max-w-3xl mx-auto text-center bg-gradient-to-br from-purple-100/60 to-pink-100/60">
-        <div class="space-y-8 sm:space-y-10 px-4">
-          <p class="text-2xl sm:text-3xl md:text-4xl font-normal text-gray-800 leading-relaxed">
+        <div class="space-y-6 sm:space-y-10 px-4 sm:px-6">
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-light text-gray-800 leading-snug">
             Você não precisa se consertar.<br>
             Você precisa se entender.
-          </p>
+          </h2>
           
-          <p class="text-lg sm:text-xl md:text-2xl text-gray-600 font-light">
+          <p class="text-base sm:text-lg md:text-xl text-gray-600 font-light leading-relaxed">
             Se a ansiedade tem feito seus dias mais pesados,<br class="hidden sm:block">
             esse pode ser um primeiro passo mais leve.
           </p>
           
-          <a href="#oferta" class="btn-primary text-lg sm:text-xl md:text-2xl py-5 sm:py-6">
-            Quero acessar agora
-          </a>
+          <div class="py-6 sm:py-8">
+            <a href="#oferta" class="btn-primary inline-block text-base sm:text-lg md:text-xl py-4 sm:py-5 px-8 sm:px-12 whitespace-nowrap">
+              Quero acessar agora
+            </a>
+          </div>
           
-          <div class="space-y-3 sm:space-y-4 text-base sm:text-lg text-gray-600 font-light pt-8 sm:pt-10">
+          <div class="space-y-2 sm:space-y-3 text-base sm:text-lg text-gray-600 font-light pt-4 sm:pt-6">
             <p>Você não é fraca.</p>
             <p>Você não está exagerando.</p>
             <p class="font-normal text-gray-800">Você está ansiosa — e isso pode ser cuidado.</p>
@@ -482,12 +484,35 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
+const trackCheckout = () => {
+  if (window.fbq) {
+    window.fbq('track', 'InitiateCheckout')
+  }
+}
+
+onMounted(() => {
+  // Carregar Meta Pixel
+  window.fbq = window.fbq || function() {
+    (window.fbq.q = window.fbq.q || []).push(arguments)
+  }
+  window.fbq('init', '10956068056102042')
+  window.fbq('track', 'PageView')
+})
+
 useHead({
   title: 'Quando a Mente Não Desliga | Um guia para lidar com ansiedade',
   meta: [
     { name: 'description', content: 'Um guia simples e acolhedor para mulheres que convivem com ansiedade no dia a dia' },
     { property: 'og:title', content: 'Quando a Mente Não Desliga' },
     { property: 'og:description', content: 'Um guia simples para lidar com a ansiedade sem se sentir quebrada' },
+  ],
+  script: [
+    {
+      src: 'https://connect.facebook.net/en_US/fbevents.js',
+      async: true
+    }
   ]
 })
 </script>
